@@ -114,11 +114,11 @@ namespace GuideXml
             doc.Save("input.xml");         //resave so xml is formatted the same as .new.xml
 
             XmlNode node;
-            int changeCount = 0;
+            int channelAnalizedCount = 0;
             while (ie.MoveNext())
             {
                 node = (ie.Current as XmlNode);
-                node.Attributes["IsVisible"].Value = "false";
+                
                 int nodeChannelInt = Convert.ToInt32(node.Attributes["Number"].Value);
 
                 if (nodeChannelInt < maxChannelNumber  && nodeChannelInt > minChannelNumber)
@@ -127,16 +127,26 @@ namespace GuideXml
                     {
                         if ((ie.Current as XmlNode).Attributes["Number"].Value == l.GuideNumber)
                         {
+                            if (node.Attributes["IsVisible"].Value != "true")
+                                Console.WriteLine("{0} ADDED - {1}", nodeChannelInt, l.GuideName);
                             node.Attributes["IsVisible"].Value = "true";
                             //Debug.WriteLine(node.Attributes["Number"].Value + " == " + l.GuideNumber);
-                            Console.WriteLine("{0} visible - {1}", l.GuideNumber, l.GuideName);
-                            changeCount++;
+                            //Console.WriteLine("{0} visible - {1}", l.GuideNumber, l.GuideName);
+                            channelAnalizedCount++;
                             break;
                         }
+
                     }
                 }
+                else
+                {
+                    if (node.Attributes["IsVisible"].Value != "false")
+                        Console.WriteLine("{0} REMOVED OUT OF BOUNDS", nodeChannelInt);
+                    node.Attributes["IsVisible"].Value = "false";
+                    
+                }
             }
-            Console.WriteLine("{0} channels changed", changeCount);
+            Console.WriteLine("Between {0} - {1} | {2} channels analized", minChannelNumber, maxChannelNumber, channelAnalizedCount);
             doc.Save("output.new.xml");
         }
 
