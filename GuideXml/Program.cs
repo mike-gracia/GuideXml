@@ -1,24 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using System.Windows.Forms;
-using System.Net;
 using System.IO;
-using Newtonsoft.Json;
+using System.Linq;
+using System.Net;
+using System.Xml;
+using JsonConfig;
+
 
 namespace GuideXml
 {
     class Program
     {
-        static int minChannelNumber = 500;
-        static int maxChannelNumber = 1000;
-        static string sURL = "http://tuner.";
+        static int minChannelNumber = Config.Default.minChannelNumber;
+        static int maxChannelNumber = Config.Default.maxChannelNumber;
+        static string tunerUrl = Config.Default.tunerUrl;
 
         static void Main(string[] args)
         {
@@ -80,7 +77,7 @@ namespace GuideXml
             StreamReader webStreamReader = WebStreamReader(statusUrl);
 
 
-            Console.WriteLine("Requesting channels from {0}", sURL);
+            Console.WriteLine("Requesting channels from {0}", tunerUrl);
 
 
             var status = JsonConvert.DeserializeObject<TvScanStatus>(webStreamReader.ReadLine());
@@ -98,7 +95,7 @@ namespace GuideXml
             Stream objStream;
             StreamReader objReader;
 
-            wrGETURL = WebRequest.Create(sURL + target);
+            wrGETURL = WebRequest.Create(tunerUrl + target);
             objStream = wrGETURL.GetResponse().GetResponseStream();
             objReader = new StreamReader(objStream);
 
