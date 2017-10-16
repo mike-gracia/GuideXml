@@ -139,7 +139,7 @@ namespace GuideXml
                 else
                 {
                     if (node.Attributes["IsVisible"].Value != "false")
-                        Console.WriteLine("{0} REMOVED OUT OF BOUNDS", nodeChannelInt);
+                        Console.WriteLine("{0} REMOVED - {1}", nodeChannelInt, node.Attributes["CallSign"].Value);
                     node.Attributes["IsVisible"].Value = "false";
                     
                 }
