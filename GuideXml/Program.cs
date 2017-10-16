@@ -132,6 +132,7 @@ namespace GuideXml
                             channelAnalizedCount++;
                             break;
                         }
+                        node.Attributes["IsVisible"].Value = "false";
 
                     }
                 }
